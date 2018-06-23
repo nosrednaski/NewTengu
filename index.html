@@ -55,11 +55,13 @@
           </div>
          </div>
 
+
           <div class="tile is parent is-vertical">
            
-            <div class="tile box">
-              <p class="title">Emotion</p>
-              <br>
+            <a class="button is-dark is-rounded" type="submit" id="URL">Click to Navigate to Original Article</a>
+
+            <div class="tile is-child box">
+              <div class="title">Emotion</div>
               <div id="sentiment-output">
                 <div>Anger: <span id="first-output">0</span></div>
                 <div>Joy: <span id="second-output">0</span></div>
@@ -67,15 +69,34 @@
                 <div>Sadness: <span id="fourth-output">0</span></div>
                 <div>Surprise: <span id="fifth-output">0</span></div>
               </div>
+              <button class="trigger" id="modal-button">?</button>
+                <div id="emotions-modal" class="modal">
+                  <div class="modal-background"></div>
+                  <div class="modal-content">
+                    <p>The number results are the probability the authori is expressing the respective emotion.</p>
+                  </div>
+                  <button class="modal-close is-large" aria-label="close"></button>
+                </div>
             </div>
           
 
          
             <div class="tile is-child box">
               <p class="title">Polical Analysis</p>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper diam at erat pulvinar, at pulvinar felis blandit. Vestibulum volutpat tellus diam, consequat gravida libero rhoncus ut. Morbi maximus, leo sit amet vehicula eleifend, nunc dui porta orci, quis semper odio felis ut quam.</p>
-              <p>Suspendisse varius ligula in molestie lacinia. Maecenas varius eget ligula a sagittis. Pellentesque interdum, nisl nec interdum maximus, augue diam porttitor lorem, et sollicitudin felis neque sit amet erat. Maecenas imperdiet felis nisi, fringilla luctus felis hendrerit sit amet. Aenean vitae gravida diam, finibus dignissim turpis. Sed eget varius ligula, at volutpat tortor.</p>
-              <p>Integer sollicitudin, tortor a mattis commodo, velit urna rhoncus erat, vitae congue lectus dolor consequat libero. Donec leo ligula, maximus et pellentesque sed, gravida a metus. Cras ullamcorper a nunc ac porta. Aliquam ut aliquet lacus, quis faucibus libero. Quisque non semper leo.</p>
+              <div id="political-output">
+                <div>Liberal: <span id="liberal-output">0</span></div>
+                <div>Conservative: <span id="conservative-output">0</span></div>
+                <div>Libertarian: <span id="libertarian-output">0</span></div>
+                <div>Green: <span id="green-output">0</span></div>
+              </div>
+              <button id="modal-button">?</button>
+              <div id="emotions-modal" class="modal">
+                <div class="modal-background"></div>
+                <div class="modal-content">
+                  <p>THe number results represent the likelihood that each of the four political leanings are expressed in the analyzed text. Values less than 0.05 indicate that it is very unlikely the text is expressing that particular political leaning.</p>
+                </div>
+                <button class="modal-close is-large" aria-label="close"></button>
+              </div>
             </div>
           </div>
           
