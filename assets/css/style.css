@@ -1,0 +1,81 @@
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content {
+    flex: 1 0 auto;
+    
+  }
+
+  progress {
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+    transition: all linear;
+  }
+ 
+  #questions {
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer {
+    flex-shrink: 0;
+  }
+  
+  body {
+    font-family: 'Goudy Bookletter 1911', serif;
+  }
+
+  .has-bg-img {
+    background: url('../images/tree5.jpg') center center;
+    background-size: auto;
+  }
+
+  .has-bg-img-bot {
+    background: url('../images/tree5.jpg') bottom center;
+    background-size: auto;
+  }
+
+  h1.title {
+    text-shadow: 2px 2px black;
+  }
+
+  .radio {
+    font-size: 2em;
+  }
+
+  .parallax .box {
+    margin-bottom: 0;
+  }
+
+ 
+  
+  /* ##########Parallax############# */
+  .bg-img-1, .bg-img-2, .bg-img-3 {
+    position: relative;
+    opacity: .8;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+  .bg-img-1 {
+    background-image: url("../images/tree2.jpg");
+    min-height: 900px;
+  }
+
+  .bg-img-2 {
+    background-image: url("../images/tree.jpg"); 
+    min-height: 400px;
+  }
+
+  .bg-img-3 {
+    background-image: url("../images/tree3.jpg"); 
+    min-height: 800px;
+  }
+
+  
