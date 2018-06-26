@@ -24,37 +24,37 @@ $(document).ready(function() {
     //********************SMMRY API on click******************* */
     $(document).on("click", "#searcher", function() {
       var inputURL=$("input").val();
-      //$(".hero").hide(1000);
-      //$(".resultsDisplay").show(1000);
+      $(".hero").hide(1000);
+      $(".resultsDisplay").show(1000);
       var articleToSummarize = inputURL;
 
-      var queryUrl = 'https://newsapi.org/v2/everything?' +
-                'q=' + articleToSummarize +'&' +
-                'sortBy=popularity&' +
-                'apiKey=d3b35953079847e18ee6d70f0c5ef14a';
+      // var queryUrl = 'https://newsapi.org/v2/everything?' +
+      //           'q=' + articleToSummarize +'&' +
+      //           'sortBy=popularity&' +
+      //           'apiKey=d3b35953079847e18ee6d70f0c5ef14a';
       
-      $.ajax({
-        url: queryUrl,
-        method: "GET",
-      }).then(function(response) {
-        console.log(response);
+      // $.ajax({
+      //   url: queryUrl,
+      //   method: "GET",
+      // }).then(function(response) {
+      //   console.log(response);
 
-        var results = response.articles;
+      //   var results = response.articles;
 
-        for (var i = 0; i < 10; i++) {
-          var articleDiv = $("<div>");
-          var titleDiv = $("<p>").text(results[i].title);
-          var descriptionDiv = $("<p>").text(results[i].description);
-          var urlDiv = $("<p>").text(results[i].url);
+      //   for (var i = 0; i < 10; i++) {
+      //     var articleDiv = $("<div>");
+      //     var titleDiv = $("<p>").text(results[i].title);
+      //     var descriptionDiv = $("<p>").text(results[i].description);
+      //     var urlDiv = $("<p>").text(results[i].url);
 
-          articleDiv.append(titleDiv);
-          articleDiv.append(descriptionDiv);
-          articleDiv.append(urlDiv);
+      //     articleDiv.append(titleDiv);
+      //     articleDiv.append(descriptionDiv);
+      //     articleDiv.append(urlDiv);
 
-          console.log(articleDiv);
-          $("#articles").prepend(articleDiv);
-        }
-      })
+      //     console.log(articleDiv);
+      //     $("#articles").prepend(articleDiv);
+      //   }
+      // })
       
       $("#URL").on("click", function() {
         window.open(articleToSummarize,  "_blank");
