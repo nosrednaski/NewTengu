@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $(".resultsDisplay").hide();
+    $(".topicResults").hide();
     // $(".hero").hide(1000);
     var modal = document.querySelector(".modal");
     var trigger = document.querySelector(".trigger");
@@ -19,17 +20,40 @@ $(document).ready(function() {
     closeButton.addEventListener("click", toggleModal);
     window.addEventListener("click", windowOnClick);
 
+    //google API for current news onLoad/
+    
+    var currentNewsAPI = 'https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=d3b35953079847e18ee6d70f0c5ef14a'
+    $.ajax({
+      url: currentNewsAPI,
+      method: "GET",
+    }).then(function(data) {
+      console.log(data);
+      var resTop = data.articles;
 
-
-    //********************SMMRY API on click******************* */
-    $(document).on("click", "#searcher", function() {
+      for(var i=0; i < 5; i++) {
+        var currentDiv= $("<div>");
+        var currentTitle= $("<p>").text(resTop[i].title);
+        var currentBrk= $("<br>");
+        currentDiv.append(currentTitle);
+        currentDiv.append(currentBrk);
+        currentDiv.attr("url", resTop[i].url)
+        console.log(currentDiv);
+        $("#topCurrent").prepend(currentDiv);
+        //I want each of the current news to be a link, but it somehow runs through the url
+        //summary and emotion stuff when you click it.
+      }
+    })
+    
+    //********************topic search on click******************* */
+    $(document).on("click", "#topicSearch", function() {
       var inputURL=$("input").val();
       $(".hero").hide(1000);
-      $(".resultsDisplay").show(1000);
-      var articleToSummarize = inputURL;
+      $(".currentNews").hide(1000);
+      $(".topicResults").show(1000);
+      var queryTopic = inputURL;
 
       var queryUrl = 'https://newsapi.org/v2/everything?' +
-                'q=' + articleToSummarize +'&' +
+                'q=' + queryTopic +'&' +
                 'sortBy=popularity&' +
                 'apiKey=d3b35953079847e18ee6d70f0c5ef14a';
       
@@ -42,6 +66,8 @@ $(document).ready(function() {
         var results = response.articles;
 
         for (var i = 0; i < 10; i++) {
+          //this needs to be cleaned up some.
+          //probably use similar code to above to turn titles to links, that go through the url button
           var articleDiv = $("<div>");
           var titleDiv = $("<p>").text(results[i].title);
           var descriptionDiv = $("<p>").text(results[i].description);
@@ -52,10 +78,10 @@ $(document).ready(function() {
           articleDiv.append(urlDiv);
 
           console.log(articleDiv);
-          $("#articles").prepend(articleDiv);
+          $("#topics-results").prepend(articleDiv);
         }
       })
-      
+      //what dis do again? it's supposed to be summary but i'm a little confused.
       $("#URL").on("click", function() {
         window.open(articleToSummarize,  "_blank");
       })
