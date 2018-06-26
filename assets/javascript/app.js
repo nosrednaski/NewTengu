@@ -27,17 +27,18 @@ $(document).ready(function() {
       url: currentNewsAPI,
       method: "GET",
     }).then(function(data) {
-      console.log(data);
+      console.log("current news" + data);
       var resTop = data.articles;
 
       for(var i=0; i < 5; i++) {
         var currentDiv= $("<div>");
-        var currentTitle= $("<p>").text(resTop[i].title);
+        var currentTitle= $("<button>").text(resTop[i].title);
         var currentBrk= $("<br>");
         currentDiv.append(currentTitle);
         currentDiv.append(currentBrk);
-        currentDiv.attr("url", resTop[i].url)
-        console.log(currentDiv);
+        currentTitle.attr("input", resTop[i].url)
+        currentTitle.attr("id", "URL");
+        console.log("displayed current" + currentDiv);
         $("#topCurrent").prepend(currentDiv);
         //I want each of the current news to be a link, but it somehow runs through the url
         //summary and emotion stuff when you click it.
@@ -47,9 +48,9 @@ $(document).ready(function() {
     //********************topic search on click******************* */
     $(document).on("click", "#topicSearch", function() {
       var inputURL=$("input").val();
-      $(".hero").hide(1000);
       $(".currentNews").hide(1000);
       $(".topicResults").show(1000);
+
       var queryTopic = inputURL;
 
       var queryUrl = 'https://newsapi.org/v2/everything?' +
@@ -69,24 +70,46 @@ $(document).ready(function() {
           //this needs to be cleaned up some.
           //probably use similar code to above to turn titles to links, that go through the url button
           var articleDiv = $("<div>");
-          var titleDiv = $("<p>").text(results[i].title);
-          var descriptionDiv = $("<p>").text(results[i].description);
-          var urlDiv = $("<p>").text(results[i].url);
+          var titleDiv = $("<button>").text(results[i].title);
+          var titleBrk = $("<br");
 
           articleDiv.append(titleDiv);
-          articleDiv.append(descriptionDiv);
-          articleDiv.append(urlDiv);
-
-          console.log(articleDiv);
-          $("#topics-results").prepend(articleDiv);
+          articleDiv.append(titleBrk);
+          titleDiv.attr("input", results[i].url);
+          titleDiv.attr("id", "URL");      
+          
+          console.log("display" + articleDiv);
+          $("#topResults").prepend(articleDiv);
         }
-      })
-      //what dis do again? it's supposed to be summary but i'm a little confused.
+      });
+    });
+  
+      //summarizer, searcher button isn't working
+    $(document).on("click", "#searcher", function() {
+      console.log("url clicked");
+      $(".hero").hide(1000);
+      $(".currentNews").hide(1000);
+      $(".resultsDisplay").show(1000);
+      var articleToSummarize=$("input").val();
+      /*var queryUrl = "https://cors-anywhere.herokuapp.com/" + "api.smmry.com/SM_API_KEY=CB55D94259&SM_URL=" + articleToSummarize + "&SM_IGNORE_LENGTH";
+ 
+      $.ajax({
+        url: queryUrl,
+        method: "GET",
+ 
+      }).then(function(response) {
+        console.log(response);
+        var sumDiv = $("<div>");
+        var results = response.data;
+        var p = $("<p>").text(response.sm_api_content);
+        sumDiv.append(p);
+        $("#summary-output").append(sumDiv);
+
       $("#URL").on("click", function() {
         window.open(articleToSummarize,  "_blank");
       })
-      
-
+    })
+*/
       $.post(
         'https://apiv2.indico.io/summarization',
         JSON.stringify({
