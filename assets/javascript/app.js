@@ -1,6 +1,6 @@
 $(document).ready(function() {
-    $(".resultsDisplay").hide();
-    $(".topicResults").hide();
+    $(".results-display").hide();
+    $(".topic-results").hide();
     // $(".hero").hide(1000);
    
    //################## Modals ##############################
@@ -19,10 +19,10 @@ $(document).ready(function() {
     closeButton.addEventListener("click", toggleModal);
     window.addEventListener("click", windowOnClick);
 
-    //google API for current news onLoad/
-    var currentNewsAPI = 'https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=d3b35953079847e18ee6d70f0c5ef14a'
+    //###################### Calling Google News ################################
+    var current-newsAPI = 'https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=d3b35953079847e18ee6d70f0c5ef14a'
     $.ajax({
-      url: currentNewsAPI,
+      url: current-newsAPI,
       method: "GET",
     }).then(function(data) {
       var resTop = data.articles;
@@ -34,19 +34,19 @@ $(document).ready(function() {
         currentDiv.append(currentTitle);
         currentDiv.append(currentBrk);
         currentTitle.attr("input", resTop[i].url)
-        currentTitle.attr("id", "clicker");
+        currentTitle.attr("id", "headline-button");
         console.log("displayed current" + currentDiv);
-        $("#topCurrent").prepend(currentDiv);
+        $("#top-current").prepend(currentDiv);
         //I want each of the current news to be a link, but it somehow runs through the url
         //summary and emotion stuff when you click it.
       }
     })
     
-    //******************** Topic Search on click******************* */
-    $(document).on("click", "#topicSearch", function() {
+    //############################# Topic Search on click ##############################/
+    $(document).on("click", "#topic-search", function() {
       var inputURL=$("input").val();
-      $(".currentNews").hide(1000);
-      $(".topicResults").show(1000);
+      $(".current-news").hide(1000);
+      $(".topic-results").show(1000);
 
       var queryTopic = inputURL;
 
@@ -73,23 +73,23 @@ $(document).ready(function() {
           articleDiv.append(titleDiv);
           articleDiv.append(titleBrk);
           titleDiv.attr("input", results[i].url);
-          titleDiv.attr("id", "clicker");      
+          titleDiv.attr("id", "headline-button");      
           
           console.log("display" + articleDiv);
-          $("#newsResults").prepend(articleDiv);
+          $("#news-results").prepend(articleDiv);
         };
       });
     });
   
-    $(document).on("click", "#searcher", function() {
+  // ################################### Submit URL Button Click #################################3 
+    $(document).on("click", "#submit-url-button", function() {
       $(".hero").hide(1000);
-      $(".currentNews").hide(1000);
-      $(".topicResults").hide(1000);
-      $(".resultsDisplay").show(1000);
-      $(".currentNews").hide(1000);
+      $(".current-news").hide(1000);
+      $(".topic-results").hide(1000);
+      $(".results-display").show(1000);
+      $(".current-news").hide(1000);
       var articleToSummarize=$("input").val();
 
-      //################################# SUMMARY API's #############################################
       var queryUrl = "https://cors-anywhere.herokuapp.com/" + "api.smmry.com/SM_API_KEY=CB55D94259&SM_URL=" + articleToSummarize + "&SM_IGNORE_LENGTH";
       $.ajax({
         url: queryUrl,
@@ -97,7 +97,7 @@ $(document).ready(function() {
       }).then(function(response) {
         console.log(response);
         $("#summary-output").append(response.sm_api_content);
-        $("#articleTitle").text(response.sm_api_title);
+        $("#article-title").text(response.sm_api_title);
       });
     
       $.post(
@@ -115,7 +115,7 @@ $(document).ready(function() {
         summaryDisplay = summaryDisplay.replace(/Image copyright Getty Images/g, "");
         $("#summary-output").append(summaryDisplay);   
         
-        $("#URLButton").on("click", function() {
+        $("#url-button").on("click", function() {
           window.open(articleToSummarize,  "_blank");
         });
       });
@@ -213,13 +213,13 @@ $(document).ready(function() {
       });  
     });
 
-    $(document).on("click", "#clicker", function() {
+    $(document).on("click", "#headline-button", function() {
       console.log("url clicked");
       $(".hero").hide(1000);
-      $(".currentNews").hide(1000);
-      $(".topicResults").hide(1000);
-      $(".resultsDisplay").show(1000);
-      $(".newsResults").hide(1000);
+      $(".current-news").hide(1000);
+      $(".topic-results").hide(1000);
+      $(".results-display").show(1000);
+      $(".news-results").hide(1000);
       var articleToSummarize = $(this).attr("input");
 
       
@@ -238,7 +238,7 @@ $(document).ready(function() {
         $("#summary-output").text(summaryObject.results);     
       });
 
-    //***************Indico API************************ */
+   
 
     // Obtains sentiment output for article input
 
