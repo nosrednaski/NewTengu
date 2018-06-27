@@ -2,32 +2,29 @@ $(document).ready(function() {
     $(".resultsDisplay").hide();
     $(".topicResults").hide();
     // $(".hero").hide(1000);
+   
+   //################## Modals ##############################
     var modal = document.querySelector(".modal");
     var trigger = document.querySelector(".trigger");
     var closeButton = document.querySelector(".modal-close");
-
     function toggleModal() {
       modal.classList.toggle("show-modal");
-    }
-
+    };
     function windowOnClick(event) {
       if (event.target === modal) {
         toggleModal();
-      }
-    }
-
+      };
+    };
     trigger.addEventListener("click", toggleModal);
     closeButton.addEventListener("click", toggleModal);
     window.addEventListener("click", windowOnClick);
 
     //google API for current news onLoad/
-    
     var currentNewsAPI = 'https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=d3b35953079847e18ee6d70f0c5ef14a'
     $.ajax({
       url: currentNewsAPI,
       method: "GET",
     }).then(function(data) {
-      console.log("current news" + data);
       var resTop = data.articles;
 
       for(var i=0; i < 5; i++) {
@@ -45,7 +42,7 @@ $(document).ready(function() {
       }
     })
     
-    //********************topic search on click******************* */
+    //******************** Topic Search on click******************* */
     $(document).on("click", "#topicSearch", function() {
       var inputURL=$("input").val();
       $(".currentNews").hide(1000);
@@ -84,34 +81,25 @@ $(document).ready(function() {
       });
     });
   
-      //summarizer, searcher button isn't working
     $(document).on("click", "#searcher", function() {
-      console.log("url clicked");
       $(".hero").hide(1000);
       $(".currentNews").hide(1000);
       $(".topicResults").hide(1000);
       $(".resultsDisplay").show(1000);
       $(".currentNews").hide(1000);
       var articleToSummarize=$("input").val();
-      /*var queryUrl = "https://cors-anywhere.herokuapp.com/" + "api.smmry.com/SM_API_KEY=CB55D94259&SM_URL=" + articleToSummarize + "&SM_IGNORE_LENGTH";
- 
+
+      //################################# SUMMARY API's #############################################
+      var queryUrl = "https://cors-anywhere.herokuapp.com/" + "api.smmry.com/SM_API_KEY=CB55D94259&SM_URL=" + articleToSummarize + "&SM_IGNORE_LENGTH";
       $.ajax({
         url: queryUrl,
         method: "GET",
- 
       }).then(function(response) {
         console.log(response);
-        var sumDiv = $("<div>");
-        var results = response.data;
-        var p = $("<p>").text(response.sm_api_content);
-        sumDiv.append(p);
-        $("#summary-output").append(sumDiv);
-
-      $("#URL").on("click", function() {
-        window.open(articleToSummarize,  "_blank");
-      })
-    })
-*/
+        $("#summary-output").append(response.sm_api_content);
+        $("#articleTitle").text(response.sm_api_title);
+      });
+    
       $.post(
         'https://apiv2.indico.io/summarization',
         JSON.stringify({
@@ -120,17 +108,33 @@ $(document).ready(function() {
           'top_n': 10,
         })
       ).then(function(res1) { 
-        console.log(res1) ;
         var summaryObject = JSON.parse(res1);
         console.log(summaryObject);
-        $("#summary-output").text(summaryObject.results);     
+        let summaryDisplay = summaryObject.results.toString();
+        summaryDisplay = summaryDisplay.replace(/\.,/g, ". ");
+        summaryDisplay = summaryDisplay.replace(/Image copyright Getty Images/g, "");
+        $("#summary-output").append(summaryDisplay);   
+        
+        $("#URLButton").on("click", function() {
+          window.open(articleToSummarize,  "_blank");
+        });
       });
 
-    //***************Indico API************************ */
-
-    // Obtains sentiment output for article input
-
       $.post(
+        'https://api.aylien.com/api/v1/summarize',
+        JSON.stringify({
+          'X-AYLIEN-TextAPI-Application-Key': " 541a5c8142013a14cc4dca1084b86c28",
+          'data': articleToSummarize,
+        })
+      ).then(function(res2) {
+        var sumSomeMore = JSON.parse(res2);
+        console.log(sumSomeMore);
+        $("#summary-output").append(response.sm_api_content);
+      });
+      
+    //############################## Indico Political/ Emotional Analysis #####################################
+
+        $.post(
         'https://apiv2.indico.io/emotion/',
         JSON.stringify({
           'api_key': "52ab40ad3535532ada2f2b567ddb900e",
@@ -138,9 +142,8 @@ $(document).ready(function() {
           'threshold': 0.0
         })
       ).then(function(res) { 
-        console.log(res);
         var emotionObject = JSON.parse(res);
-        console.log(emotionObject);
+        // console.log(emotionObject);
 
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
@@ -160,18 +163,14 @@ $(document).ready(function() {
                         duration: 1000,
                         easing: 'in'
                       },
-                      chart: {
-                        'width':500,
-                        'height':400, 
-                      }
+                      'width':500,
+                      'height':250,
+                      legend: { position: 'none' },
                     };
       var chart = new google.visualization.BarChart($('#emotion-chart')[0]);
       chart.draw(data, options);
     };
       });
-
-    //obtains political output for article input
-    
 
       $.post(
         'https://apiv2.indico.io/political',
@@ -291,9 +290,9 @@ $(document).ready(function() {
           'threshold': 0.0
         })
       ).then(function(res2) { 
-        console.log(res2);
+        
         var politicalObject = JSON.parse(res2);
-        console.log(politicalObject);
+        // console.log(politicalObject);
 
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
@@ -308,22 +307,18 @@ $(document).ready(function() {
       ]);
       var options = {
                       animation: {
-                      startup: true,
-                      duration: 1000,
-                      easing: 'in'
+                          startup: true,
+                          duration: 1000,
+                          easing: 'in'
                       },
-                     'width':400,
-                     'height':300};
-      var chart = new google.visualization.BarChart($('#political-chart')[0]);
+                      // legend: { position: 'none' },
+                     'width':500,
+                     'height':250};
+      var chart = new google.visualization.PieChart($('#political-chart')[0]);
       chart.draw(data, options);
     };
       
       });
     });
  
-
-     //************************** Data Display *************************
-      
-      
-   
-  });
+  })
