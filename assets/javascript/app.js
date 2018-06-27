@@ -80,7 +80,7 @@ $(document).ready(function() {
           
           console.log("display" + articleDiv);
           $("#newsResults").prepend(articleDiv);
-        }
+        };
       });
     });
   
@@ -93,25 +93,7 @@ $(document).ready(function() {
       $(".resultsDisplay").show(1000);
       $(".currentNews").hide(1000);
       var articleToSummarize=$("input").val();
-      /*var queryUrl = "https://cors-anywhere.herokuapp.com/" + "api.smmry.com/SM_API_KEY=CB55D94259&SM_URL=" + articleToSummarize + "&SM_IGNORE_LENGTH";
- 
-      $.ajax({
-        url: queryUrl,
-        method: "GET",
- 
-      }).then(function(response) {
-        console.log(response);
-        var sumDiv = $("<div>");
-        var results = response.data;
-        var p = $("<p>").text(response.sm_api_content);
-        sumDiv.append(p);
-        $("#summary-output").append(sumDiv);
 
-      $("#URL").on("click", function() {
-        window.open(articleToSummarize,  "_blank");
-      })
-    })
-*/
       $.post(
         'https://apiv2.indico.io/summarization',
         JSON.stringify({
@@ -209,6 +191,9 @@ $(document).ready(function() {
     };
       
       });
+      $("#navigate-to-article").on("click", function(){
+        window.open(articleToSummarize, "_blank");
+      });  
     });
 
     $(document).on("click", "#clicker", function() {
@@ -318,6 +303,10 @@ $(document).ready(function() {
       chart.draw(data, options);
     };
       
+      });
+      $("#navigate-to-article").on("click", function(){
+        window.open(articleToSummarize, "_blank");
+  
       });
     });
  
