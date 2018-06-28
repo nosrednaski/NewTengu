@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-<title>&#x1F47A</title>
+<title>&#x1F47A Tengu</title>
 <meta charset="utf-8"/>
 <link rel="stylesheet" href="./assets/css/reset.css">
-<link rel="stylesheet" href="./assets/css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css">
+<link rel="stylesheet" href="./assets/css/style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> type="text/javascript"</script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
@@ -19,21 +19,37 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            AI Emotive Text Analysis
+            Tengu: Article Analysis Tool
           </h1>
           <h2 class="subtitle">
-            Learn what's really being said. Paste a URL below. 
+            Learn what's really being said. Paste a URL below or click on a recent article. 
           </h2>
         </div>
       </div>
     </section>  
 
-  <container class= "box urlInput">      
+  <container class= "box url-input">      
     <input class="input is-info" type="text" id="textinput" placeholder="Paste URL here."></input>
     <div class="buttons is-right">
-      <input class="button" type="submit" value="Submit" id="searcher"></input>
+        <input class="button" type="submit" value="Submit URL" id="submit-url-button"></input>
+        <input class="button" type="submit" value="Submit Topic" id="topic-search"></input>
     </div>
-  </container>  
+  
+  </container>
+
+  <container class= "current-news">
+    <div class="column is-10 is-offset-1">
+      <h1 id="news-articles"><strong>Current News</strong></h1>
+      <div id="top-current"></div>
+    </div>
+  </container>
+
+  <container class="topic-results">
+    <div class="column is-10 is-offset-1">
+      <h1 id="news-articles"><strong>News Results</strong></h1>
+      <div id="news-results"></div>
+    </div>
+  </container>
 
   <container class="hero is-dark is-bold">
     <div class="hero-body">
@@ -45,7 +61,7 @@
       </div>
   </container>
 
-  <container class="resultsDisplay">
+  <container class="results-display">
     <!-- Put in columns so we can have a margin -->
     <div class="columns is-mobile">
       <div class="column is-offset-1 is-10">
@@ -53,7 +69,7 @@
         <div class="tile is-ancestor has-text-centered">
           <div class="tile is-parent ">
               <div class="tile is-child">
-                  <p class="title" id="articleTitle">Article Title</p>
+                  <p class="title" id="article-title">Article Title</p>
                 </div>
               </div>
          </div> 
@@ -71,7 +87,7 @@
             <div class="tile is-child box">
               <div class="title">Emotion</div>
 
-                <div id="emotion-chart" style="width:400; height:300"></div>
+                <div id="emotion-chart"></div>
 
               <button class="trigger" id="modal-button">?</button>
                 <div id="emotions-modal" class="modal">
@@ -84,7 +100,7 @@
              </div>
          
             <div class="tile is-child box">
-              <p class="title">Polical Analysis</p>
+              <p class="title">Political Analysis</p>
               <div id="political-chart"></div>
               
               <button id="modal-button">?</button>
@@ -96,22 +112,22 @@
                 <button class="modal-close is-large" aria-label="close"></button>
                </div>
              </div>
-            </div>
+           </div>
           </div>
-         <div class="tile is-ancestor has-text-centered">
-              <div class="tile is-parent ">
-                  <div class="tile is-child">
-                      <a class="button is-dark is-rounded" type="submit" id="URL">Click to Navigate to Original Article</a>
-                    </div>
-                  </div>
-             </div> 
-        
-      </div>
-    </div>    
+          <div class="tile is-ancestor">
+              <div class="tile is-parent">
+                 <div class="tile is-child">
+                   <div class="buttons is-centered">
+                       <a class="button is-dark is-rounded" type="submit" id="navigate-to-article">Click to Navigate to Original Article</a>
+                       <a class="button is-dark is-rounded" type="submit" id="reset-button">Click to Return to Front</a>
+                     </div>
+                    </div>  
+                 </div>
+               </div>
+        </div>
+      </div>    
   </container>     
   
 
 </body>
 </html>
-
-
