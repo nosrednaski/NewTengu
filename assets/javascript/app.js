@@ -183,6 +183,7 @@ $(document).ready(function() {
           articleDiv.append(titleDiv);
           articleDiv.append(titleBrk);
           titleDiv.attr("input", results[i].url);
+          titleDiv.attr("title", results[i].title);
           titleDiv.attr("id", "headline-button");      
           
           $("#news-results").prepend(articleDiv);
