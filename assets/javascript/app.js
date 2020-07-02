@@ -1,58 +1,72 @@
 $(document).ready(function() {
     $(".results-display").hide();
     $(".topic-results").hide();
-   
+    
+    
     //########################### Function ###########################################
     function articleAnalyzer(articleToSummarize) {
       var queryUrl = "https://cors-anywhere.herokuapp.com/" + "api.smmry.com/SM_API_KEY=CB55D94259&SM_URL=" + articleToSummarize + "&SM_IGNORE_LENGTH";
       $.ajax({
+        type: "GET",
         url: queryUrl,
-        method: "GET",
-      }).then(function(response) {
-        console.log(response);
-        $("#summary-output").text(response.sm_api_content);
-        $("#article-title").text(response.sm_api_title);
+        success: function(response) {
+          $("#summary-output").text(response.sm_api_content);
+          $("#article-title").text(response.sm_api_title);
+        },
+        error: function(response) {
+          console.log(`articleAnalyzer Func Error: `+response);
+        }
       });
       //############################# Indico API (Summarize) ################################
-      $.post(
-        'https://apiv2.indico.io/summarization',
-        JSON.stringify({
+      $.ajax({
+        type: "POST",
+        url: 'https://cors-anywhere.herokuapp.com/'+'https://apiv2.indico.io/summarization',
+        data: JSON.stringify({
           'api_key': "4f4722e7847cae008684275f830abf12",
           'data': articleToSummarize,
           'top_n': 10,
-        })
-      ).then(function(res1) { 
-        var summaryObject = JSON.parse(res1);
-        console.log(summaryObject);
-        let summaryDisplay = summaryObject.results.toString();
-        summaryDisplay = summaryDisplay.replace(/\.,/g, ". ");
-        summaryDisplay = summaryDisplay.replace(/\?,/g, ". ");
-        summaryDisplay = summaryDisplay.replace(/Image copyright Getty Images/g, "");
-        $("#summary-output").text(summaryDisplay);   
-        
-        $("#url-button").on("click", function() {
-          window.open(articleToSummarize,  "_blank");
-        });
+          }),
+        success: function(res) {
+          let summaryObject = JSON.parse(res);
+          console.log(summaryObject);
+          let summaryDisplay = summaryObject.results.toString();
+          summaryDisplay = summaryDisplay.replace(/\.,/g, ". ");
+          summaryDisplay = summaryDisplay.replace(/\?,/g, ". ");
+          summaryDisplay = summaryDisplay.replace(/Image copyright Getty Images/g,  "");
+          $("#summary-output").text(summaryDisplay);   
+          
+          $("#url-button").on("click", function() {
+            window.open(articleToSummarize,  "_blank");
+          });
+        },
+        error: (err) => {
+          console.log(err);
+        }
       });
 
       //################################ Aylien API (Summarize/ Title) ##########################
-      $.post(
-        'https://api.aylien.com/api/v1/summarize',
-        JSON.stringify({
+      $.ajax({
+        type: "POST",
+        url: 'https://cors-anywhere.herokuapp.com/'+'https://api.aylien.com/api/v1/summarize',
+        data: JSON.stringify({
           'X-AYLIEN-TextAPI-Application-Key': "541a5c8142013a14cc4dca1084b86c28",
           'data': articleToSummarize,
           "Accept": "application/json" 
-        })
-      ).then(function(res2) {
-        var sumSomeMore = JSON.parse(res2);
-        console.log(sumSomeMore);
-        
+          }),
+        success: (res) => {
+          var sumSomeMore = JSON.parse(res);
+          console.log(sumSomeMore);
+        },
+        error: (err) => {
+          console.log(err);
+        }
       });
+      
       
     //############################## Indico Political/ Emotional Analysis #####################################
 
         $.post(
-        'https://apiv2.indico.io/emotion/',
+        'https://cors-anywhere.herokuapp.com/'+'https://apiv2.indico.io/emotion/',
         JSON.stringify({
           'api_key': "52ab40ad3535532ada2f2b567ddb900e",
           'data': articleToSummarize,
@@ -90,7 +104,7 @@ $(document).ready(function() {
       });
 
       $.post(
-        'https://apiv2.indico.io/political',
+        'https://cors-anywhere.herokuapp.com/'+'https://apiv2.indico.io/political',
         JSON.stringify({
           'api_key': "4f4722e7847cae008684275f830abf12",
           'data': articleToSummarize,
@@ -132,25 +146,37 @@ $(document).ready(function() {
       });
     }; //###### Function
     //###################### Calling Google News ################################
-    var currentNewsAPI = 'https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=d3b35953079847e18ee6d70f0c5ef14a'
+    var currentNewsAPI ="https://cors-anywhere.herokuapp.com/"+'https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=d3b35953079847e18ee6d70f0c5ef14a'
     $.ajax({
       url: currentNewsAPI,
-      method: "GET",
-    }).then(function(data) {
-      var resTop = data.articles;
+      type: "GET",
+      // headers: {'Access-Control-Allow-Origin':'*'},
+      // dataType: "jsonp",
+      // jsonpCallback: 'processJSONPResponse',
+      contentType: "application/json; charset=utf-8",
+      success: (result, status, xhr) => {
 
-      for(var i=0; i < 5; i++) {
-        var currentDiv= $("<div>");
-        var currentTitle= $("<button>").text(resTop[i].title);
-        var currentBrk= $("<br>");
-        currentDiv.append(currentTitle);
-        currentDiv.append(currentBrk);
-        currentTitle.attr("title", resTop[i].title);
-        currentTitle.attr("input", resTop[i].url)
-        currentTitle.attr("id", "headline-button");
-        $("#top-current").prepend(currentDiv);
+        console.log(result.articles);
+        console.log(status, xhr);
+        var resTop = result.articles;
+        console.log(result);
+        for(var i=0; i < 5; i++) {
+          var currentDiv= $("<div>");
+          var currentTitle= $("<button>").text(resTop[i].title);
+          var currentBrk= $("<br>");
+          currentDiv.append(currentTitle);
+          currentDiv.append(currentBrk);
+          currentTitle.attr("title", resTop[i].title);
+          currentTitle.attr("input", resTop[i].url)
+          currentTitle.attr("id", "headline-button");
+          $("#top-current").prepend(currentDiv);
+        }
+      },
+      error: (xhr, status, error) => {
+        console.log("News Api Error: " + status + " " + error + " " + xhr.status + " " + xhr.statusText);
       }
-    })
+    }),
+    
     
     //############################# Topic Search on click ##############################
     $(document).on("click", "#topic-search-button", function() {
@@ -161,7 +187,7 @@ $(document).ready(function() {
 
       var queryTopic = inputURL;
 
-      var queryUrl = 'https://newsapi.org/v2/everything?' +
+      var queryUrl = 'https://cors-anywhere.herokuapp.com/'+'https://newsapi.org/v2/everything?' +
                 'q=' + queryTopic +'&' +
                 'sortBy=popularity&pageSize=5&' +
                 'apiKey=d3b35953079847e18ee6d70f0c5ef14a';
