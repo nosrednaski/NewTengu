@@ -1,3 +1,2 @@
-# projectTengu
+# The New Tengu
 
-deployable link: https://philphanguyen.github.io/projectTengu/

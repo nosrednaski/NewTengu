@@ -14,7 +14,7 @@ $(document).ready(function() {
           $("#article-title").text(response.sm_api_title);
         },
         error: function(response) {
-          console.log(`articleAnalyzer Func Error: `+response);
+          console.log(`summary Func Error: `+ response);
         }
       });
       //############################# Indico API (Summarize) ################################
@@ -58,7 +58,7 @@ $(document).ready(function() {
           console.log(sumSomeMore);
         },
         error: (err) => {
-          console.log(err);
+          console.log('aylien api err'+err);
         }
       });
       
@@ -145,14 +145,14 @@ $(document).ready(function() {
         window.open(articleToSummarize, "_blank");
       });
     }; //###### Function
-    //###################### Calling Google News ################################
-    var currentNewsAPI ="https://cors-anywhere.herokuapp.com/"+'https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=d3b35953079847e18ee6d70f0c5ef14a'
+    //###################### Get Initial Articles ################################
+    // d3b35953079847e18ee6d70f0c5ef14a, 4d3a091583ce48d58af7bbace180ad59, 0f850f65bd6f43aa9f761a8a12ad55af - api keys
+    let newsUrl ="https://cors-anywhere.herokuapp.com/" +
+                'https://newsapi.org/v2/top-headlines?country=us&apiKey=0f850f65bd6f43aa9f761a8a12ad55af'
     $.ajax({
-      url: currentNewsAPI,
+      url: newsUrl,
       type: "GET",
-      // headers: {'Access-Control-Allow-Origin':'*'},
-      // dataType: "jsonp",
-      // jsonpCallback: 'processJSONPResponse',
+      headers: {'Access-Control-Allow-Origin':'*'},
       contentType: "application/json; charset=utf-8",
       success: (result, status, xhr) => {
 
@@ -249,13 +249,6 @@ $(document).ready(function() {
       $(".current-news").show(1000);
     }); //########### reset end
 
-    //################################# MODAL ################################
-    $("#modal-button").click(function() {
-      $(".modal").addClass("is-active");  
-    });
-    
-    $(".modal-close").click(function() {
-       $(".modal").removeClass("is-active");
-    });                     
+              
 
   }); //############### On load
